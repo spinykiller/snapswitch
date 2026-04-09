@@ -222,7 +222,15 @@ async function focusProjectTabsView() {
 
 function getPinnedProjects() {
   const config = vscode.workspace.getConfiguration('projectTabs');
-  return config.get('projects') || [];
+  const projects = config.get('projects') || [];
+  
+  // Deduplicate by path just in case
+  const seen = new Set();
+  return projects.filter(p => {
+    if (seen.has(p.path)) return false;
+    seen.add(p.path);
+    return true;
+  });
 }
 
 function getStatusBarMaxItems() {
