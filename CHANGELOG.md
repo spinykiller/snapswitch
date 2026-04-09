@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.0.0 (Launchpad Rebrand)
-- Rebranded "Project Tabs" to "Launchpad"
+## 1.0.0 (SnapSwitch Rebrand)
+- Rebranded "Project Tabs" to "SnapSwitch"
 - Added new minimalist rocket icon and updated Activity Bar icon
-- Refreshed Command Palette items and tree views to use Launchpad namespace
+- Refreshed Command Palette items and tree views to use SnapSwitch namespace
 
 ## 1.0.0
 

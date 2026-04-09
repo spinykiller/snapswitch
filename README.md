@@ -1,4 +1,4 @@
-# Launchpad for VS Code
+# SnapSwitch for VS Code
 
 One-click project switching for VS Code — launch into your full project context instantly.
 
@@ -25,15 +25,15 @@ npx --yes vsce package --no-dependencies
 
 | Action | How |
 |---|---|
-| Pin current project | Command Palette → **Launchpad: Pin Current Project** |
+| Pin current project | Command Palette → **SnapSwitch: Pin Current Project** |
 | Switch project (one click) | Click a project button in the Status Bar |
 | Switch project (shortcut) | **Cmd + <Number>** (1-9) for pinned projects |
-| Switch project (picker) | Command Palette → **Launchpad: Switch Project** |
+| Switch project (picker) | Command Palette → **SnapSwitch: Switch Project** |
 | Switch project (side bar) | Open **Pinned Projects** view and click a project |
 
 ## Support & Donation
 
-If you find Launchpad useful, consider supporting the development:
+If you find SnapSwitch useful, consider supporting the development:
 - [GitHub Sponsors](https://github.com/sponsors/JYashSakariyaJain)
 - [Support via Sidebar Dashboard]
 

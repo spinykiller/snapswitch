@@ -1,6 +1,6 @@
 # Roadmap & Future Requirements
 
-This document outlines the planned features and improvements for **Launchpad**.
+This document outlines the planned features and improvements for **SnapSwitch**.
 
 
 
@@ -27,8 +27,8 @@ This document outlines the planned features and improvements for **Launchpad**.
 - [x] **Custom Icons**: Allow users to assign specific colors or icons to project tabs for visual grouping.
 - [ ] **State Restoration**: Option to restore exact open files when switching projects.
 - [x] **Workspace Support**: Enhanced native support for `.code-workspace` multi-root workspace files.
-- [x] **Project Grouping / Tags**: Organize projects into custom folders or tags (e.g., 'Work', 'Personal') in the Launchpad sidebar.
-- [x] **Git State Indicators**: Display the active Git branch and an uncommitted changes indicator directly on the Launchpad project UI.
+- [x] **Project Grouping / Tags**: Organize projects into custom folders or tags (e.g., 'Work', 'Personal') in the SnapSwitch sidebar.
+- [x] **Git State Indicators**: Display the active Git branch and an uncommitted changes indicator directly on the SnapSwitch project UI.
 - [x] **Recent Projects Section**: An automated "Recently opened" list adjacent to pinned projects, simplifying the discovery of new projects.
 - [x] **Analytics & Time Tracking**: Small visual metrics indicating how frequently a project is launched or how much time is spent in it.
 

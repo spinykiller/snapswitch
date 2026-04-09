@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 
-class LaunchpadViewProvider {
+class SnapSwitchViewProvider {
   constructor(context) {
     this._context = context;
     this._view = null;
@@ -100,8 +100,8 @@ class LaunchpadViewProvider {
     const position = ['left', 'top', 'right'].includes(config.get('position')) ? config.get('position') : 'top';
     const showRecent = config.get('showRecentProjects') !== false;
     const active = getActivePath();
-    const stats = this._context.globalState.get('launchpad.projectStats') || {};
-    const recent = this._context.globalState.get('launchpad.recentProjects') || [];
+    const stats = this._context.globalState.get('snapswitch.projectStats') || {};
+    const recent = this._context.globalState.get('snapswitch.recentProjects') || [];
     
     this._view.webview.html = getHtml(projects, active, position, showRecent, recent, stats);
 
@@ -149,22 +149,22 @@ function getActiveName() {
 }
 
 function trackLaunch(context, path) {
-  const stats = context.globalState.get('launchpad.projectStats') || {};
+  const stats = context.globalState.get('snapswitch.projectStats') || {};
   if (!stats[path]) stats[path] = { count: 0, last: 0 };
   stats[path].count++;
   stats[path].last = Date.now();
-  context.globalState.update('launchpad.projectStats', stats);
+  context.globalState.update('snapswitch.projectStats', stats);
 }
 
 function trackRecent(context) {
   const path = getActivePath();
   if (!path) return;
   const name = getActiveName();
-  let recents = context.globalState.get('launchpad.recentProjects') || [];
+  let recents = context.globalState.get('snapswitch.recentProjects') || [];
   recents = recents.filter(p => p.path !== path);
   recents.unshift({ name, path });
   if (recents.length > 5) recents.length = 5;
-  context.globalState.update('launchpad.recentProjects', recents);
+  context.globalState.update('snapswitch.recentProjects', recents);
 }
 
 async function addCurrentProject(context) {
@@ -217,7 +217,7 @@ async function switchProjectQuickPick() {
 }
 
 async function focusProjectTabsView() {
-  await vscode.commands.executeCommand('workbench.view.extension.launchpadContainer');
+  await vscode.commands.executeCommand('workbench.view.extension.snapswitchContainer');
 }
 
 function getPinnedProjects() {
@@ -232,7 +232,7 @@ function getStatusBarMaxItems() {
   return Math.max(0, Math.min(20, Math.floor(n)));
 }
 
-class LaunchpadTreeProvider {
+class SnapSwitchTreeProvider {
   constructor() {
     this._onDidChangeTreeData = new vscode.EventEmitter();
     this.onDidChangeTreeData = this._onDidChangeTreeData.event;
@@ -266,12 +266,12 @@ class LaunchpadTreeProvider {
       const groupItems = Array.from(groups).map(g => {
         const item = new vscode.TreeItem(g, vscode.TreeItemCollapsibleState.Expanded);
         item.iconPath = new vscode.ThemeIcon('folder');
-        item.contextValue = 'launchpadGroup';
+        item.contextValue = 'snapswitchGroup';
         return item;
       });
       
       return [...groupItems, ...rootItems];
-    } else if (element.contextValue === 'launchpadGroup') {
+    } else if (element.contextValue === 'snapswitchGroup') {
       // Return items exactly in this group
       return projects
         .filter(p => p.group === element.label)
@@ -285,9 +285,9 @@ class LaunchpadTreeProvider {
     const item = new vscode.TreeItem(p.name, vscode.TreeItemCollapsibleState.None);
     item.description = p.path;
     item.tooltip = p.path;
-    item.contextValue = 'launchpadProject';
+    item.contextValue = 'snapswitchProject';
     item.command = {
-      command: 'launchpad.openProject',
+      command: 'snapswitch.openProject',
       title: 'Open Project',
       arguments: [p.path]
     };
@@ -307,13 +307,13 @@ function activate(context) {
   // Track open on activate to populate Recents Analytics
   trackRecent(context);
 
-  const provider = new LaunchpadViewProvider(context);
-  const treeProvider = new LaunchpadTreeProvider();
+  const provider = new SnapSwitchViewProvider(context);
+  const treeProvider = new SnapSwitchTreeProvider();
 
   const statusSwitch = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-  statusSwitch.text = '$(rocket) Launchpad';
-  statusSwitch.tooltip = 'Switch project (Launchpad)';
-  statusSwitch.command = 'launchpad.switchProject';
+  statusSwitch.text = '$(rocket) SnapSwitch';
+  statusSwitch.tooltip = 'Switch project (SnapSwitch)';
+  statusSwitch.command = 'snapswitch.switchProject';
   statusSwitch.show();
 
   let projectStatusDisposables = [];
@@ -333,7 +333,7 @@ function activate(context) {
       item.text = `${p.icon ? '$(' + p.icon + ')' : genericIcon} ${p.name}`;
       item.tooltip = `Open ${p.path}`;
       if (p.color) item.color = new vscode.ThemeColor(p.color);
-      item.command = { command: 'launchpad.openProject', title: 'Open Project', arguments: [p.path] };
+      item.command = { command: 'snapswitch.openProject', title: 'Open Project', arguments: [p.path] };
       item.show();
       projectStatusDisposables.push(item);
     }
@@ -343,30 +343,30 @@ function activate(context) {
   context.subscriptions.push(
     statusSwitch,
     { dispose: () => projectStatusDisposables.forEach(d => d.dispose()) },
-    vscode.window.registerWebviewViewProvider('launchpad.sidebarView', provider, {
+    vscode.window.registerWebviewViewProvider('snapswitch.sidebarView', provider, {
       webviewOptions: { retainContextWhenHidden: true }
     }),
-    vscode.window.registerTreeDataProvider('launchpad.projectsTree', treeProvider),
-    vscode.commands.registerCommand('launchpad.addProject', async () => {
+    vscode.window.registerTreeDataProvider('snapswitch.projectsTree', treeProvider),
+    vscode.commands.registerCommand('snapswitch.addProject', async () => {
       await addCurrentProject(context);
       provider.refresh();
       treeProvider.refresh();
       refreshProjectStatusBar();
     }),
-    vscode.commands.registerCommand('launchpad.switchProject', async () => {
+    vscode.commands.registerCommand('snapswitch.switchProject', async () => {
       await switchProjectQuickPick();
     }),
-    vscode.commands.registerCommand('launchpad.focus', async () => {
+    vscode.commands.registerCommand('snapswitch.focus', async () => {
       await focusProjectTabsView();
     }),
-    vscode.commands.registerCommand('launchpad.openProject', async (path) => {
+    vscode.commands.registerCommand('snapswitch.openProject', async (path) => {
       if (!path) return;
       trackLaunch(context, path);
       const uri = vscode.Uri.file(path);
       await vscode.commands.executeCommand('vscode.openFolder', uri, false);
     }),
     ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i =>
-      vscode.commands.registerCommand(`launchpad.openProject${i}`, async () => {
+      vscode.commands.registerCommand(`snapswitch.openProject${i}`, async () => {
         const projects = getPinnedProjects();
         if (projects[i - 1]) {
           trackLaunch(context, projects[i - 1].path);
@@ -375,7 +375,7 @@ function activate(context) {
         }
       })
     ),
-    vscode.commands.registerCommand('launchpad.removeProject', async () => {
+    vscode.commands.registerCommand('snapswitch.removeProject', async () => {
       const config = vscode.workspace.getConfiguration('projectTabs');
       const projects = config.get('projects') || [];
       const picked = await vscode.window.showQuickPick(
