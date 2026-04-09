@@ -805,7 +805,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     </div>
   </div>
   <div class="footer">
-    <a href="https://github.com/sponsors/JYashSakariyaJain" class="donate-btn">
+    <a href="https://github.com/sponsors/spinykiller" class="donate-btn">
       <span class="donate-btn-icon">❤️</span> Support Developer
     </a>
   </div>

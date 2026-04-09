@@ -16,7 +16,7 @@ This document outlines the planned features and improvements for **SnapSwitch**.
 ### 💰 Monetization & Support
 - **Status**: Completed in v1.0.0
 - **Feature**: Added a premium-styled "Support Developer" button to the Dashboard sidebar.
-- **Link**: [GitHub Sponsors](https://github.com/sponsors/JYashSakariyaJain)
+- **Link**: [GitHub Sponsors](https://github.com/sponsors/spinykiller)
 
 ---
 

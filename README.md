@@ -34,7 +34,7 @@ npx --yes vsce package --no-dependencies
 ## Support & Donation
 
 If you find SnapSwitch useful, consider supporting the development:
-- [GitHub Sponsors](https://github.com/sponsors/JYashSakariyaJain)
+- [GitHub Sponsors](https://github.com/sponsors/spinykiller)
 - [Support via Sidebar Dashboard]
 
 ## How It Works
