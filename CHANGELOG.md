@@ -1,7 +1,8 @@
 # Changelog
 
 ## 1.0.0 (SnapSwitch Rebrand)
-- Rebranded "Project Tabs" to "SnapSwitch"
+- Rebranded "Launchpad" to "SnapSwitch" to resolve Marketplace name conflict
+- Updated all command IDs, view IDs, and links to snapswitch namespace
 - Added new minimalist rocket icon and updated Activity Bar icon
 - Refreshed Command Palette items and tree views to use SnapSwitch namespace
 
