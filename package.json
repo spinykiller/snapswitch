@@ -210,9 +210,26 @@
               },
               "path": {
                 "type": "string"
+              },
+              "group": {
+                "type": "string",
+                "description": "Optional group/tag for the project"
+              },
+              "icon": {
+                "type": "string",
+                "description": "Optional codicon identifier (e.g. 'star', 'code')"
+              },
+              "color": {
+                "type": "string",
+                "description": "Optional ThemeColor ID or hex value"
               }
             }
           }
+        },
+        "projectTabs.showRecentProjects": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show an automatically collected list of recently opened projects in the Launchpad view."
         },
         "projectTabs.position": {
           "type": "string",
