@@ -1,0 +1,237 @@
+{
+  "name": "launchpad-projects",
+  "displayName": "Launchpad",
+  "description": "One-click project switching for VS Code",
+  "version": "1.0.0",
+  "publisher": "JYashSakariyaJain",
+  "icon": "icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spinykiller/launchpad-projects"
+  },
+  "bugs": {
+    "url": "https://github.com/spinykiller/launchpad-projects/issues"
+  },
+  "homepage": "https://github.com/spinykiller/launchpad-projects#readme",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other",
+    "Keymaps"
+  ],
+  "keywords": [
+    "project",
+    "switch",
+    "workspace",
+    "tabs",
+    "launchpad",
+    "manager"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:launchpad.sidebarView",
+    "onView:launchpad.projectsTree",
+    "onCommand:launchpad.switchProject",
+    "onCommand:launchpad.focus",
+    "onCommand:launchpad.openProject"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "launchpadContainer",
+          "title": "Launchpad",
+          "icon": "activity_icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "launchpadContainer": [
+        {
+          "type": "webview",
+          "id": "launchpad.sidebarView",
+          "name": "Projects"
+        },
+        {
+          "type": "tree",
+          "id": "launchpad.projectsTree",
+          "name": "Pinned Projects"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "launchpad.addProject",
+        "title": "Launchpad: Pin Current Project"
+      },
+      {
+        "command": "launchpad.switchProject",
+        "title": "Launchpad: Switch Project"
+      },
+      {
+        "command": "launchpad.focus",
+        "title": "Launchpad: Show Dashboard"
+      },
+      {
+        "command": "launchpad.openProject",
+        "title": "Launchpad: Open Project"
+      },
+      {
+        "command": "launchpad.openProject1",
+        "title": "Launchpad: Open Project 1"
+      },
+      {
+        "command": "launchpad.openProject2",
+        "title": "Launchpad: Open Project 2"
+      },
+      {
+        "command": "launchpad.openProject3",
+        "title": "Launchpad: Open Project 3"
+      },
+      {
+        "command": "launchpad.openProject4",
+        "title": "Launchpad: Open Project 4"
+      },
+      {
+        "command": "launchpad.openProject5",
+        "title": "Launchpad: Open Project 5"
+      },
+      {
+        "command": "launchpad.openProject6",
+        "title": "Launchpad: Open Project 6"
+      },
+      {
+        "command": "launchpad.openProject7",
+        "title": "Launchpad: Open Project 7"
+      },
+      {
+        "command": "launchpad.openProject8",
+        "title": "Launchpad: Open Project 8"
+      },
+      {
+        "command": "launchpad.openProject9",
+        "title": "Launchpad: Open Project 9"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "launchpad.openProject1",
+        "key": "cmd+1",
+        "mac": "cmd+1",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject2",
+        "key": "cmd+2",
+        "mac": "cmd+2",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject3",
+        "key": "cmd+3",
+        "mac": "cmd+3",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject4",
+        "key": "cmd+4",
+        "mac": "cmd+4",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject5",
+        "key": "cmd+5",
+        "mac": "cmd+5",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject6",
+        "key": "cmd+6",
+        "mac": "cmd+6",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject7",
+        "key": "cmd+7",
+        "mac": "cmd+7",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject8",
+        "key": "cmd+8",
+        "mac": "cmd+8",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "launchpad.openProject9",
+        "key": "cmd+9",
+        "mac": "cmd+9",
+        "when": "editorTextFocus || !editorTextFocus"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "launchpad.switchProject",
+          "when": "view == launchpad.sidebarView",
+          "group": "navigation"
+        },
+        {
+          "command": "launchpad.addProject",
+          "when": "view == launchpad.sidebarView",
+          "group": "navigation"
+        },
+        {
+          "command": "launchpad.addProject",
+          "when": "view == launchpad.projectsTree",
+          "group": "navigation"
+        },
+        {
+          "command": "launchpad.switchProject",
+          "when": "view == launchpad.projectsTree",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Launchpad",
+      "properties": {
+        "projectTabs.projects": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "projectTabs.position": {
+          "type": "string",
+          "default": "top",
+          "enum": [
+            "left",
+            "top",
+            "right"
+          ],
+          "description": "Where pinned projects should render inside the Launchpad view."
+        },
+        "projectTabs.statusBarMaxItems": {
+          "type": "number",
+          "default": 6,
+          "minimum": 0,
+          "maximum": 20,
+          "description": "How many pinned projects to show as one-click buttons in the status bar. Set to 0 to disable."
+        }
+      }
+    }
+  }
+}

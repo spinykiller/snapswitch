@@ -1,0 +1,8 @@
+.code-review-graph/**
+.vscode/**
+.git/**
+**/*.vsix
+**/*.map
+node_modules/**
+terminals/**
+agent-transcripts/**
