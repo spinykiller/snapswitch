@@ -104,6 +104,16 @@ class LaunchpadViewProvider {
     const recent = this._context.globalState.get('launchpad.recentProjects') || [];
     
     this._view.webview.html = getHtml(projects, active, position, showRecent, recent, stats);
+
+    // Asynchronously fetch and inject git states
+    if (projects.length > 0) {
+      Promise.all(projects.map(async p => {
+        const state = await getGitState(p.path);
+        if (state && this._view) {
+          this._view.webview.postMessage({ command: 'gitState', path: p.path, state });
+        }
+      })).catch(() => {});
+    }
   }
 
   refresh() { this._render(); }
@@ -112,6 +122,22 @@ class LaunchpadViewProvider {
 function getActivePath() {
   if (vscode.workspace.workspaceFile) return vscode.workspace.workspaceFile.fsPath;
   return vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath || null;
+}
+
+const cp = require('child_process');
+const util = require('util');
+const exec = util.promisify(cp.exec);
+
+async function getGitState(dir) {
+  try {
+    const { stdout: branch } = await exec('git branch --show-current', { cwd: dir, timeout: 800 });
+    if (!branch.trim()) return null;
+    const { stdout: status } = await exec('git status --porcelain', { cwd: dir, timeout: 800 });
+    const changes = status.split('\\n').filter(l => l.trim()).length;
+    return { branch: branch.trim(), changes };
+  } catch (e) {
+    return null;
+  }
 }
 
 function getActiveName() {
@@ -417,6 +443,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
 
     return `
       <div class="tab ${isActive ? 'active' : ''}" 
+           data-path="${escapeHtml(p.path)}"
            draggable="true" 
            ondragstart="drag(event, '${safePath}')" 
            ondragover="allowDrop(event)" 
@@ -470,7 +497,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
           const safePath = escapeJs(p.path);
           const safeName = escapeHtml(p.name);
           return `
-            <div class="tab recent-tab ${isActive ? 'active' : ''}" onclick="switchProject('${safePath}')" title="${escapeHtml(p.path)}">
+            <div class="tab recent-tab ${isActive ? 'active' : ''}" data-path="${safePath}" onclick="switchProject('${safePath}')" title="${escapeHtml(p.path)}">
                <div class="tab-left">
                  <div class="icon-wrap"><i class="codicon codicon-history"></i></div>
                  <div class="tab-info">
@@ -703,6 +730,17 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     transition: opacity 0.1s, background 0.1s;
     user-select: none;
   }
+  .git-badge {
+    font-size: 9.5px;
+    opacity: 0.65;
+    margin-left: 6px;
+    font-weight: normal;
+    background: var(--vscode-badge-background);
+    color: var(--vscode-badge-foreground);
+    padding: 1px 4px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
   .tab:hover .tab-btn { opacity: 0.5; }
   .tab-btn:hover { opacity: 1 !important; }
   .delete-btn:hover { background: rgba(255,80,80,0.2); color: #ff6b6b; }
@@ -796,6 +834,24 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
   }
   document.addEventListener('dragend', (ev) => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('dragging'));
+  });
+
+  window.addEventListener('message', event => {
+    const message = event.data;
+    if (message.command === 'gitState') {
+      const tabs = document.querySelectorAll(\`.tab[data-path="\${message.path.replace(/"/g, '&quot;')}"]\`);
+      tabs.forEach(tab => {
+        const nameNode = tab.querySelector('.tab-name');
+        if (nameNode && !nameNode.querySelector('.git-badge')) {
+          const badge = document.createElement('span');
+          badge.className = 'git-badge';
+          const changesHtml = message.state.changes > 0 ? \` <span style="color:var(--vscode-minimapGutter-modifiedBackground, #e2c08d)">*\${message.state.changes}</span>\` : '';
+          badge.innerHTML = \`⎇ \${message.state.branch}\${changesHtml}\`;
+          badge.title = \`Git Branch: \${message.state.branch}\`;
+          nameNode.appendChild(badge);
+        }
+      });
+    }
   });
 </script>
 </body>
