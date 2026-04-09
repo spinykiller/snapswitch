@@ -77,7 +77,7 @@ class SnapSwitchViewProvider {
           break;
         }
         case 'setPosition': {
-          const pos = ['left', 'top', 'right'].includes(message.position) ? message.position : 'top';
+          const pos = ['left', 'right'].includes(message.position) ? message.position : 'left';
           await config.update('position', pos, vscode.ConfigurationTarget.Global);
           this._render();
           break;
@@ -97,7 +97,7 @@ class SnapSwitchViewProvider {
     if (!this._view) return;
     const config = vscode.workspace.getConfiguration('projectTabs');
     const projects = config.get('projects') || [];
-    const position = ['left', 'top', 'right'].includes(config.get('position')) ? config.get('position') : 'top';
+    const position = ['left', 'right'].includes(config.get('position')) ? config.get('position') : 'left';
     const showRecent = config.get('showRecentProjects') !== false;
     const active = getActivePath();
     const stats = this._context.globalState.get('snapswitch.projectStats') || {};

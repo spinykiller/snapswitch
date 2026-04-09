@@ -2,7 +2,7 @@
   "name": "snapswitch-vscode",
   "displayName": "SnapSwitch Projects",
   "description": "One-click project switching for VS Code",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "publisher": "JYashSakariyaJain",
   "icon": "icon.png",
   "license": "MIT",
