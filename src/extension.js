@@ -330,7 +330,7 @@ function activate(context) {
       const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 99 - i);
       const isActive = p.path === activePath;
       const genericIcon = isActive ? '$(rocket)' : '$(folder)';
-      item.text = `${p.icon ? '$(' + p.icon + ')' : genericIcon} ${p.name}`;
+      item.text = `${p.icon ? '$(' + p.icon + ')' : genericIcon} ${i + 1}: ${p.name}`;
       item.tooltip = `Open ${p.path}`;
       if (p.color) item.color = new vscode.ThemeColor(p.color);
       item.command = { command: 'snapswitch.openProject', title: 'Open Project', arguments: [p.path] };
@@ -427,8 +427,10 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     }
   });
 
-  const generateProjectHtml = (p) => {
+  const generateProjectHtml = (p, index) => {
     const isActive = p.path === activePath;
+    const shortcutIndex = index + 1;
+    const shortcutHtml = shortcutIndex <= 9 ? `<span class="shortcut-n">${shortcutIndex}: </span>` : '';
     const safePath = escapeJs(p.path);
     const safeName = escapeHtml(p.name);
     const shortPath = escapeHtml(p.path.replace(/\\/g, '/').split('/').slice(-2).join('/'));
@@ -455,7 +457,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
             ${codicon}
           </div>
           <div class="tab-info">
-            <span class="tab-name">${safeName}</span>
+            <span class="tab-name">${shortcutHtml}${safeName}</span>
             <span class="tab-path">${shortPath}</span>
           </div>
         </div>
@@ -472,12 +474,12 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
   if (groupKeys.length > 0) {
       groupKeys.forEach(gk => {
           contentHtml += `<div class="group-header">${escapeHtml(gk)}</div>`;
-          contentHtml += groups[gk].map(generateProjectHtml).join('');
+          contentHtml += groups[gk].map(p => generateProjectHtml(p, projects.indexOf(p))).join('');
       });
   }
   if (ungrouped.length > 0) {
      if (groupKeys.length > 0) contentHtml += `<div class="group-header">Pinned</div>`;
-     contentHtml += ungrouped.map(generateProjectHtml).join('');
+     contentHtml += ungrouped.map(p => generateProjectHtml(p, projects.indexOf(p))).join('');
   }
 
   if (projects.length === 0) {
@@ -692,6 +694,12 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .shortcut-n {
+    opacity: 0.5;
+    font-weight: 400;
+    margin-right: 2px;
+  }
+  .tab.active .shortcut-n { opacity: 0.8; }
   .tab-path {
     font-size: 10px;
     opacity: 0.55;
