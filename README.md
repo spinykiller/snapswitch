@@ -4,10 +4,12 @@ One-click project switching for VS Code — launch into your full project contex
 
 ## Features
 
-- One-click project switching from the Status Bar
+- **One-click status bar buttons** with prepended shortcuts (e.g. `1: Project`)
 - **Keyboard Shortcuts**: Switch between projects instantly with `Cmd + 1-9`
-- Activity Bar view for managing pinned projects
-- Optional tree view (“Pinned Projects”) that you can move to the Secondary Side Bar (right)
+- **Drag-and-Drop Sidebar Dashboard**: Manage, edit, and reorganize projects smoothly!
+- **Git State Indicators**: Live Git branch & uncommitted changes directly on UI badges
+- **Customization & Grouping**: Tag your projects under sub-folders or assign dynamic Codicons!
+- **Extended Workspace Syncing**: `.code-workspace` native support along with Analytics and Auto-Recent project logs.
 
 ## Install (Local / Dev)
 

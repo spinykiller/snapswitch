@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0 (The Premium Update 🚀)
+- **Git Intelligence natively integrated:** Automatically parse your active Git branch and detect uncommitted changes live over standard tabs!
+- **Drag & Drop Repositioning:** You can now manually arrange your project slots in the sidebar by simply grabbing them!
+- **Groups & Customization:** Edit tabs to categorize them in folders/tags like 'Work' vs 'Personal', and customize your icon layouts.
+- **Analytics Trackers:** Mini Badges are now generated counting how many times you rapidly switch to environments!
+- **Advanced Workspace Syncing:** Massive enhancements dynamically resolving `.code-workspace` contexts instead of single folders!
+- **Recent Projects UI:** Easily adopt previously visited paths inside a brand new dynamically created Recent bucket on your dashboard.
+- **Status Bar Keyboard Shortcuts Helpers:** Numerical shortcuts dynamically render on the status bar!
 ## 1.0.0 (SnapSwitch Rebrand)
 - Rebranded "Launchpad" to "SnapSwitch" to resolve Marketplace name conflict
 - Updated all command IDs, view IDs, and links to snapswitch namespace
