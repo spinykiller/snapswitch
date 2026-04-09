@@ -2,7 +2,7 @@
   "name": "snapswitch-vscode",
   "displayName": "SnapSwitch Projects",
   "description": "One-click project switching for VS Code",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "publisher": "JYashSakariyaJain",
   "icon": "icon.png",
   "license": "MIT",
@@ -233,10 +233,9 @@
         },
         "projectTabs.position": {
           "type": "string",
-          "default": "top",
+          "default": "left",
           "enum": [
             "left",
-            "top",
             "right"
           ],
           "description": "Where pinned projects should render inside the SnapSwitch view."
