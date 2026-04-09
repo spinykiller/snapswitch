@@ -1,6 +1,6 @@
 {
   "name": "snapswitch-vscode",
-  "displayName": "SnapSwitch",
+  "displayName": "SnapSwitch Projects",
   "description": "One-click project switching for VS Code",
   "version": "2.0.0",
   "publisher": "JYashSakariyaJain",
