@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.1 (The Premium Update 🚀)
+## 3.0.2 (The Premium Update 🚀)
 - **Git Intelligence natively integrated:** Automatically parse your active Git branch and detect uncommitted changes live over standard tabs!
 - **Drag & Drop Repositioning:** You can now manually arrange your project slots in the sidebar by simply grabbing them!
 - **Groups & Customization:** Edit tabs to categorize them in folders/tags like 'Work' vs 'Personal', and customize your icon layouts.
