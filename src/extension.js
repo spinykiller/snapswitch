@@ -24,12 +24,39 @@ class SnapSwitchViewProvider {
         case 'switchProject': {
           trackLaunch(this._context, message.path);
           const uri = vscode.Uri.file(message.path);
-          await vscode.commands.executeCommand('vscode.openFolder', uri, false);
+          await vscode.commands.executeCommand('vscode.openFolder', uri, true);
           break;
         }
         case 'addCurrent': {
           await addCurrentProject(this._context);
           this._render();
+          break;
+        }
+        case 'addAny': {
+          const uris = await vscode.window.showOpenDialog({
+            canSelectFiles: false,
+            canSelectFolders: true,
+            canSelectMany: false,
+            openLabel: 'Add Project'
+          });
+          if (uris && uris.length > 0) {
+            const path = uris[0].fsPath;
+            if (!projects.find(p => p.path === path)) {
+              let defaultName = path.substring(path.lastIndexOf('/') + 1);
+              if (path.includes('\\')) defaultName = path.substring(path.lastIndexOf('\\') + 1);
+              const name = await vscode.window.showInputBox({
+                prompt: 'Name for this project tab',
+                value: defaultName
+              });
+              if (name) {
+                projects.push({ name, path });
+                await config.update('projects', projects, vscode.ConfigurationTarget.Global);
+                this._render();
+              }
+            } else {
+              vscode.window.showInformationMessage('Project already pinned!');
+            }
+          }
           break;
         }
         case 'removeProject': {
@@ -213,7 +240,7 @@ async function switchProjectQuickPick() {
   if (!picked) return;
 
   const uri = vscode.Uri.file(picked.path);
-  await vscode.commands.executeCommand('vscode.openFolder', uri, false);
+  await vscode.commands.executeCommand('vscode.openFolder', uri, true);
 }
 
 async function focusProjectTabsView() {
@@ -371,7 +398,7 @@ function activate(context) {
       if (!path) return;
       trackLaunch(context, path);
       const uri = vscode.Uri.file(path);
-      await vscode.commands.executeCommand('vscode.openFolder', uri, false);
+      await vscode.commands.executeCommand('vscode.openFolder', uri, true);
     }),
     ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i =>
       vscode.commands.registerCommand(`snapswitch.openProject${i}`, async () => {
@@ -379,7 +406,7 @@ function activate(context) {
         if (projects[i - 1]) {
           trackLaunch(context, projects[i - 1].path);
           const uri = vscode.Uri.file(projects[i - 1].path);
-          await vscode.commands.executeCommand('vscode.openFolder', uri, false);
+          await vscode.commands.executeCommand('vscode.openFolder', uri, true);
         }
       })
     ),
@@ -604,13 +631,6 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     min-height: 0;
   }
 
-  .pos-top .tabs {
-    flex-direction: row;
-    align-items: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
   .pos-left .tabs,
   .pos-right .tabs {
     flex-direction: column;
@@ -654,13 +674,6 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     background: var(--vscode-list-activeSelectionBackground);
     color: var(--vscode-list-activeSelectionForeground);
     border-color: var(--vscode-focusBorder);
-  }
-
-  .pos-top .tab {
-    min-width: 180px;
-    max-width: 220px;
-    flex: 0 0 auto;
-    border-bottom-width: 2px;
   }
 
   .pos-left .tab.active,
@@ -806,9 +819,9 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
 </head>
 <body>
   <div class="toolbar">
-    <button class="add-btn" onclick="addCurrent()">＋ Pin Current Project</button>
+    <button class="add-btn" onclick="addCurrent()" title="Pin current workspace">＋ Pin Current</button>
+    <button class="add-btn" onclick="addAny()" title="Add another project folder">＋ Add Project</button>
     <select class="pos" onchange="setPosition(this.value)">
-      <option value="top" ${position === 'top' ? 'selected' : ''}>Top</option>
       <option value="left" ${position === 'left' ? 'selected' : ''}>Left</option>
       <option value="right" ${position === 'right' ? 'selected' : ''}>Right</option>
     </select>
@@ -829,6 +842,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
   const vscode = acquireVsCodeApi();
   function switchProject(path) { vscode.postMessage({ command: 'switchProject', path }); }
   function addCurrent() { vscode.postMessage({ command: 'addCurrent' }); }
+  function addAny() { vscode.postMessage({ command: 'addAny' }); }
   function removeProject(path) { vscode.postMessage({ command: 'removeProject', path }); }
   function editProject(path) { vscode.postMessage({ command: 'editProject', path }); }
   function setPosition(position) { vscode.postMessage({ command: 'setPosition', position }); }
