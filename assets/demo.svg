@@ -1,0 +1,65 @@
+<svg width="800" height="250" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250">
+    <defs>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&amp;family=Inter:wght@400;600&amp;display=swap');
+            .code { font-family: 'Fira Code', monospace; font-size: 14px; fill: #569cd6; }
+            .code-string { fill: #ce9178; }
+            .code-comment { fill: #6a9955; }
+            .code-keyword { fill: #c586c0; }
+            .ui-text { font-family: 'Inter', sans-serif; font-size: 12px; fill: #ffffff; }
+        </style>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+        </filter>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="800" height="250" fill="#1e1e1e" rx="8" />
+    
+    <!-- Editor Top Bar Mock -->
+    <rect width="800" height="30" fill="#323233" rx="8" />
+    <circle cx="20" cy="15" r="6" fill="#ff5f56" />
+    <circle cx="40" cy="15" r="6" fill="#ffbd2e" />
+    <circle cx="60" cy="15" r="6" fill="#27c93f" />
+    <text x="400" y="20" class="ui-text" fill="#ccc" text-anchor="middle">extension.js — snapswitch</text>
+    
+    <!-- Code Editor Content -->
+    <text x="30" y="70" class="code"><tspan class="code-keyword">import</tspan> * <tspan class="code-keyword">as</tspan> vscode <tspan class="code-keyword">from</tspan> <tspan class="code-string">'vscode'</tspan>;</text>
+    <text x="30" y="95" class="code"><tspan class="code-keyword">export function</tspan> activate(context) {</text>
+    <text x="50" y="120" class="code"><tspan class="code-comment">// Switch projects instantly using SnapSwitch!</tspan></text>
+    <text x="50" y="145" class="code">console.log(<tspan class="code-string">"Context switching is frictionless 🚀"</tspan>);</text>
+    <text x="30" y="170" class="code">}</text>
+
+    <!-- Status Bar -->
+    <rect x="0" y="228" width="800" height="22" fill="#007acc" />
+    
+    <text x="10" y="243" class="ui-text">&gt;<tspan fill="#fff" font-family="'Fira Code', monospace">_</tspan></text>
+    <text x="35" y="243" class="ui-text">main*</text>
+    <text x="80" y="243" class="ui-text">0 ⚠️ 0</text>
+    
+    <!-- SnapSwitch Projects -->
+    <rect x="130" y="228" width="105" height="22" fill="#1f8ad1" />
+    <text x="138" y="243" class="ui-text" font-weight="600">1: 🖥️ UI-Web</text>
+    
+    <rect x="240" y="228" width="100" height="22" fill="#1f8ad1" />
+    <text x="248" y="243" class="ui-text" font-weight="600">2: ⚙️ API</text>
+    
+    <rect x="345" y="228" width="110" height="22" fill="#289b44" /> <!-- Hover state / Active -->
+    <text x="353" y="243" class="ui-text" font-weight="600">3: 📦 Infra</text>
+
+    <text x="465" y="243" class="ui-text" font-weight="600">4: 📱 Mobile</text>
+
+    <!-- Cmd+3 Tooltip Hint -->
+    <rect x="350" y="195" width="100" height="26" fill="#252526" rx="4" filter="url(#shadow)" stroke="#454545" stroke-width="1"/>
+    <text x="400" y="213" class="ui-text" text-anchor="middle" font-size="11px">Switch (Cmd+3)</text>
+    <!-- Tooltip Arrow -->
+    <polygon points="395,221 405,221 400,226" fill="#252526" stroke="#454545" stroke-width="1" />
+    <!-- Small cover for top so arrow joins cleanly -->
+    <rect x="394" y="218" width="12" height="4" fill="#252526" />
+
+    <!-- Cursor Pointer clicking project 3 -->
+    <g transform="translate(385, 235)">
+        <path d="M0 0 L0 18 L4 14 L8 22 L11 21 L7 13 L13 13 Z" fill="#ffffff" filter="url(#shadow)"/>
+        <path d="M1 2 L1 15 L4.5 12 L8 20 L9 19.5 L5.5 11.5 L11 11.5 Z" fill="#000000"/>
+    </g>
+</svg>

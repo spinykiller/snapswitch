@@ -27,7 +27,12 @@
     "workspace",
     "tabs",
     "snapswitch",
-    "manager"
+    "manager",
+    "context switching",
+    "multi-project",
+    "productivity",
+    "window",
+    "mac"
   ],
   "activationEvents": [
     "onStartupFinished",
