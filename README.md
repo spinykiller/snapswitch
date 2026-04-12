@@ -1,7 +1,8 @@
 # SnapSwitch for VS Code
 
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/JYashSakariyaJain.snapswitch-vscode?style=for-the-badge&color=blue)](https://marketplace.visualstudio.com/items?itemName=JYashSakariyaJain.snapswitch-vscode)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/JYashSakariyaJain.snapswitch-vscode?style=for-the-badge&color=success)](https://marketplace.visualstudio.com/items?itemName=JYashSakariyaJain.snapswitch-vscode)
+[![OpenVSX Downloads](https://img.shields.io/open-vsx/dt/JYashSakariyaJain/snapswitch-vscode?style=for-the-badge&label=Downloads&color=blue)](https://open-vsx.org/extension/JYashSakariyaJain/snapswitch-vscode)
+[![OpenVSX Version](https://img.shields.io/open-vsx/v/JYashSakariyaJain/snapswitch-vscode?style=for-the-badge&label=Version&color=success)](https://open-vsx.org/extension/JYashSakariyaJain/snapswitch-vscode)
+[![License](https://img.shields.io/github/license/spinykiller/snapswitch?style=for-the-badge&color=orange)](https://github.com/spinykiller/snapswitch/blob/main/LICENSE)
 
 One-click project switching for VS Code — launch into your full project context instantly.
 
