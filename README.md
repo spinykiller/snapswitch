@@ -7,7 +7,9 @@
 
 One-click project switching for VS Code — launch into your full project context instantly.
 
-![SnapSwitch Demo Graphic](./assets/demo.svg)
+![SnapSwitch Demo](./assets/demo.gif)
+
+![SnapSwitch Overview](./assets/demo.png)
 
 ## 🛑 The Problem
 Working on a **multi-project setup** (especially on Mac) can be incredibly messy. There is **no native `Cmd+Tab` / `Ctrl+Tab` support** for switching between specific VS Code windows. Falling back to the window menu or native dock takes **more than 3 clicks** and completely breaks your flow. 
