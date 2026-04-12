@@ -1,7 +1,8 @@
 # SnapSwitch for VS Code
 
-[![OpenVSX Downloads](https://img.shields.io/open-vsx/dt/JYashSakariyaJain/snapswitch-vscode?style=for-the-badge&label=Downloads&color=blue)](https://open-vsx.org/extension/JYashSakariyaJain/snapswitch-vscode)
-[![OpenVSX Version](https://img.shields.io/open-vsx/v/JYashSakariyaJain/snapswitch-vscode?style=for-the-badge&label=Version&color=success)](https://open-vsx.org/extension/JYashSakariyaJain/snapswitch-vscode)
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/JYashSakariyaJain.snapswitch-vscode?style=for-the-badge&label=VS%20Marketplace&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=JYashSakariyaJain.snapswitch-vscode)
+[![OpenVSX](https://img.shields.io/open-vsx/v/JYashSakariyaJain/snapswitch-vscode?style=for-the-badge&label=Open%20VSX&color=a60ee5)](https://open-vsx.org/extension/JYashSakariyaJain/snapswitch-vscode)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/JYashSakariyaJain.snapswitch-vscode?style=for-the-badge&label=Installs&color=success)](https://marketplace.visualstudio.com/items?itemName=JYashSakariyaJain.snapswitch-vscode)
 [![License](https://img.shields.io/github/license/spinykiller/snapswitch?style=for-the-badge&color=orange)](https://github.com/spinykiller/snapswitch/blob/main/LICENSE)
 
 One-click project switching for VS Code — launch into your full project context instantly.
@@ -27,17 +28,17 @@ Less clicking, zero mess—context switching made completely frictionless.
 - **Customization & Grouping**: Tag your projects under sub-folders or assign dynamic Codicons!
 - **Extended Workspace Syncing**: `.code-workspace` native support along with Analytics and Auto-Recent project logs.
 
-## Install (Local / Dev)
+## Install
 
-1. Package a VSIX:
+**From a Marketplace** (recommended):
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=JYashSakariyaJain.snapswitch-vscode) — search "SnapSwitch" in the Extensions tab
+- [Open VSX Registry](https://open-vsx.org/extension/JYashSakariyaJain/snapswitch-vscode) — for VS Codium / open-source VS Code builds
 
+**From source** (dev):
 ```bash
 npx --yes vsce package --no-dependencies
+# Then: Command Palette → Extensions: Install from VSIX...
 ```
-
-2. Install the generated `.vsix` in VS Code:
-
-- Command Palette → **Extensions: Install from VSIX...**
 
 ## Usage
 
