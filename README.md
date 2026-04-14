@@ -29,6 +29,7 @@ Less clicking, zero mess—context switching made completely frictionless.
 - **Git State Indicators**: Live Git branch & uncommitted changes directly on UI badges
 - **Customization & Grouping**: Tag your projects under sub-folders or assign dynamic Codicons!
 - **Extended Workspace Syncing**: `.code-workspace` native support along with Analytics and Auto-Recent project logs.
+- **Quick Terminal Access**: Open or focus your terminal instantly from the status bar, sidebar button, or using `` Cmd + ` `` / `Cmd + ₹`.
 
 ## Install
 
@@ -51,6 +52,7 @@ npx --yes vsce package --no-dependencies
 | Switch project (shortcut) | **Cmd + <Number>** (1-9) for pinned projects |
 | Switch project (picker) | Command Palette → **SnapSwitch: Switch Project** |
 | Switch project (side bar) | Open **Pinned Projects** view and click a project |
+| Quick Terminal Access | Click Terminal in Status Bar/Sidebar or **Cmd + \`** / **Cmd + ₹** |
 
 ## Support & Donation
 

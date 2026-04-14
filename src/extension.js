@@ -109,6 +109,10 @@ class SnapSwitchViewProvider {
           this._render();
           break;
         }
+        case 'openTerminal': {
+          vscode.commands.executeCommand('snapswitch.openTerminal');
+          break;
+        }
       }
     });
 
@@ -351,6 +355,12 @@ function activate(context) {
   statusSwitch.command = 'snapswitch.switchProject';
   statusSwitch.show();
 
+  const statusTerminal = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 99);
+  statusTerminal.text = '$(terminal) Terminal';
+  statusTerminal.tooltip = 'Open Terminal (Cmd+`)';
+  statusTerminal.command = 'snapswitch.openTerminal';
+  statusTerminal.show();
+
   let projectStatusDisposables = [];
   const refreshProjectStatusBar = () => {
     for (const d of projectStatusDisposables) d.dispose();
@@ -366,7 +376,9 @@ function activate(context) {
       const isActive = p.path === activePath;
       const genericIcon = isActive ? '$(rocket)' : '$(folder)';
       item.text = `${p.icon ? '$(' + p.icon + ')' : genericIcon} ${i + 1}: ${p.name}`;
-      item.tooltip = `Open ${p.path}`;
+      const shortcutIndex = i + 1;
+      const shortcutText = shortcutIndex <= 9 ? ` (Cmd+${shortcutIndex})` : '';
+      item.tooltip = `Open ${p.path}${shortcutText}`;
       if (p.color) item.color = new vscode.ThemeColor(p.color);
       item.command = { command: 'snapswitch.openProject', title: 'Open Project', arguments: [p.path] };
       item.show();
@@ -377,6 +389,7 @@ function activate(context) {
 
   context.subscriptions.push(
     statusSwitch,
+    statusTerminal,
     { dispose: () => projectStatusDisposables.forEach(d => d.dispose()) },
     vscode.window.registerWebviewViewProvider('snapswitch.sidebarView', provider, {
       webviewOptions: { retainContextWhenHidden: true }
@@ -387,6 +400,16 @@ function activate(context) {
       provider.refresh();
       treeProvider.refresh();
       refreshProjectStatusBar();
+    }),
+    vscode.commands.registerCommand('snapswitch.openTerminal', () => {
+      let terminal = vscode.window.activeTerminal;
+      if (!terminal && vscode.window.terminals.length > 0) {
+        terminal = vscode.window.terminals[0];
+      }
+      if (!terminal) {
+        terminal = vscode.window.createTerminal();
+      }
+      terminal.show();
     }),
     vscode.commands.registerCommand('snapswitch.switchProject', async () => {
       await switchProjectQuickPick();
@@ -821,6 +844,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
   <div class="toolbar">
     <button class="add-btn" onclick="addCurrent()" title="Pin current workspace">＋ Pin Current</button>
     <button class="add-btn" onclick="addAny()" title="Add another project folder">＋ Add Project</button>
+    <button class="add-btn" style="flex: 0 0 auto; padding: 7px 10px;" onclick="openTerminal()" title="Open Terminal">&gt;_</button>
     <select class="pos" onchange="setPosition(this.value)">
       <option value="left" ${position === 'left' ? 'selected' : ''}>Left</option>
       <option value="right" ${position === 'right' ? 'selected' : ''}>Right</option>
@@ -843,6 +867,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
   function switchProject(path) { vscode.postMessage({ command: 'switchProject', path }); }
   function addCurrent() { vscode.postMessage({ command: 'addCurrent' }); }
   function addAny() { vscode.postMessage({ command: 'addAny' }); }
+  function openTerminal() { vscode.postMessage({ command: 'openTerminal' }); }
   function removeProject(path) { vscode.postMessage({ command: 'removeProject', path }); }
   function editProject(path) { vscode.postMessage({ command: 'editProject', path }); }
   function setPosition(position) { vscode.postMessage({ command: 'setPosition', position }); }

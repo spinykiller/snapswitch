@@ -2,7 +2,7 @@
   "name": "snapswitch-vscode",
   "displayName": "SnapSwitch Projects",
   "description": "Switch between multiple VS Code project windows instantly — one click or Cmd+1-9. No more 3-click context switching.",
-  "version": "4.0.0",
+  "version": "4.0.2",
   "publisher": "JYashSakariyaJain",
   "icon": "icon.png",
   "galleryBanner": {
@@ -124,6 +124,10 @@
       {
         "command": "snapswitch.openProject9",
         "title": "SnapSwitch: Open Project 9"
+      },
+      {
+        "command": "snapswitch.openTerminal",
+        "title": "SnapSwitch: Open Terminal"
       }
     ],
     "keybindings": [
@@ -179,6 +183,18 @@
         "command": "snapswitch.openProject9",
         "key": "cmd+9",
         "mac": "cmd+9",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "snapswitch.openTerminal",
+        "key": "cmd+`",
+        "mac": "cmd+`",
+        "when": "editorTextFocus || !editorTextFocus"
+      },
+      {
+        "command": "snapswitch.openTerminal",
+        "key": "cmd+₹",
+        "mac": "cmd+₹",
         "when": "editorTextFocus || !editorTextFocus"
       }
     ],

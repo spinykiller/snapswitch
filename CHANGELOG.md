@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.2
+- **Enhanced Tooltips & Clarity:** Hovering over status bar buttons now explicitly shows their active keyboard shortcuts! The generic terminal icon also now correctly displays as "Terminal" on the status bar.
+- **Developer Pipeline:** Added a standard `Makefile` for streamlined builds and deployments.
+
+## 4.0.1
+- **Quick Terminal Access:** Added a terminal button (`>_`) to the sidebar toolbar and a `$(terminal)` button to the status bar.
+- **Terminal Shortcuts:** Press `` Cmd + ` `` or `Cmd + ₹` to instantly launch a new terminal or bring an existing one to the front.
+
 ## 3.0.2 (The Premium Update 🚀)
 - **Git Intelligence natively integrated:** Automatically parse your active Git branch and detect uncommitted changes live over standard tabs!
 - **Drag & Drop Repositioning:** You can now manually arrange your project slots in the sidebar by simply grabbing them!
