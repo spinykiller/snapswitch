@@ -403,9 +403,6 @@ function activate(context) {
     }),
     vscode.commands.registerCommand('snapswitch.openTerminal', () => {
       let terminal = vscode.window.activeTerminal;
-      if (!terminal && vscode.window.terminals.length > 0) {
-        terminal = vscode.window.terminals[0];
-      }
       if (!terminal) {
         terminal = vscode.window.createTerminal();
       }

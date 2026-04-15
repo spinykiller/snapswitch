@@ -2,7 +2,7 @@
   "name": "snapswitch-vscode",
   "displayName": "SnapSwitch Projects",
   "description": "Switch between multiple VS Code project windows instantly — one click or Cmd+1-9. No more 3-click context switching.",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "publisher": "JYashSakariyaJain",
   "icon": "icon.png",
   "galleryBanner": {
