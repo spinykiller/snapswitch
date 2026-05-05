@@ -164,7 +164,7 @@ async function getGitState(dir) {
     const { stdout: branch } = await exec('git branch --show-current', { cwd: dir, timeout: 800 });
     if (!branch.trim()) return null;
     const { stdout: status } = await exec('git status --porcelain', { cwd: dir, timeout: 800 });
-    const changes = status.split('\\n').filter(l => l.trim()).length;
+    const changes = status.split('\n').filter(l => l.trim()).length;
     return { branch: branch.trim(), changes };
   } catch (e) {
     return null;
@@ -402,11 +402,7 @@ function activate(context) {
       refreshProjectStatusBar();
     }),
     vscode.commands.registerCommand('snapswitch.openTerminal', () => {
-      let terminal = vscode.window.activeTerminal;
-      if (!terminal) {
-        terminal = vscode.window.createTerminal();
-      }
-      terminal.show();
+      vscode.commands.executeCommand('workbench.action.terminal.toggleTerminal');
     }),
     vscode.commands.registerCommand('snapswitch.switchProject', async () => {
       await switchProjectQuickPick();
@@ -486,7 +482,6 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     const isActive = p.path === activePath;
     const shortcutIndex = index + 1;
     const shortcutHtml = shortcutIndex <= 9 ? `<span class="shortcut-n">${shortcutIndex}: </span>` : '';
-    const safePath = escapeJs(p.path);
     const safeName = escapeHtml(p.name);
     const shortPath = escapeHtml(p.path.replace(/\\/g, '/').split('/').slice(-2).join('/'));
     
@@ -499,13 +494,10 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
     const codicon = `<i class="codicon codicon-${iconChar}"></i>`;
 
     return `
-      <div class="tab ${isActive ? 'active' : ''}" 
+      <div class="tab ${isActive ? 'active' : ''}"
            data-path="${escapeHtml(p.path)}"
-           draggable="true" 
-           ondragstart="drag(event, '${safePath}')" 
-           ondragover="allowDrop(event)" 
-           ondrop="drop(event, '${safePath}')"
-           onclick="switchProject('${safePath}')" 
+           data-action="switch"
+           draggable="true"
            title="${escapeHtml(p.path)}">
         <div class="tab-left">
           <div class="icon-wrap ${isActive ? 'active' : ''}">
@@ -518,8 +510,8 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
         </div>
         <div class="tab-actions">
           ${badgeHtml}
-          <span class="tab-btn edit-btn" onclick="event.stopPropagation(); editProject('${safePath}')" title="Edit Tab">✎</span>
-          <span class="tab-btn delete-btn" onclick="event.stopPropagation(); removeProject('${safePath}')" title="Unpin">✕</span>
+          <span class="tab-btn edit-btn" data-action="edit" data-path="${escapeHtml(p.path)}" title="Edit Tab">✎</span>
+          <span class="tab-btn delete-btn" data-action="remove" data-path="${escapeHtml(p.path)}" title="Unpin">✕</span>
         </div>
       </div>`;
   };
@@ -551,10 +543,9 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
       recentHtml += `<div class="group-header recent-header">Recent Projects</div>`;
       recentHtml += recentProjects.slice(0, 4).map(p => {
           const isActive = p.path === activePath;
-          const safePath = escapeJs(p.path);
           const safeName = escapeHtml(p.name);
           return `
-            <div class="tab recent-tab ${isActive ? 'active' : ''}" data-path="${safePath}" onclick="switchProject('${safePath}')" title="${escapeHtml(p.path)}">
+            <div class="tab recent-tab ${isActive ? 'active' : ''}" data-path="${escapeHtml(p.path)}" data-action="switch" title="${escapeHtml(p.path)}">
                <div class="tab-left">
                  <div class="icon-wrap"><i class="codicon codicon-history"></i></div>
                  <div class="tab-info">
@@ -574,6 +565,7 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
@@ -839,10 +831,10 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
 </head>
 <body>
   <div class="toolbar">
-    <button class="add-btn" onclick="addCurrent()" title="Pin current workspace">＋ Pin Current</button>
-    <button class="add-btn" onclick="addAny()" title="Add another project folder">＋ Add Project</button>
-    <button class="add-btn" style="flex: 0 0 auto; padding: 7px 10px;" onclick="openTerminal()" title="Open Terminal">&gt;_</button>
-    <select class="pos" onchange="setPosition(this.value)">
+    <button class="add-btn" data-action="addCurrent" title="Pin current workspace">＋ Pin Current</button>
+    <button class="add-btn" data-action="addAny" title="Add another project folder">＋ Add Project</button>
+    <button class="add-btn" style="flex: 0 0 auto; padding: 7px 10px;" data-action="openTerminal" title="Open Terminal">&gt;_</button>
+    <select class="pos" id="posSelect">
       <option value="left" ${position === 'left' ? 'selected' : ''}>Left</option>
       <option value="right" ${position === 'right' ? 'selected' : ''}>Right</option>
     </select>
@@ -861,38 +853,56 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
   </div>
 <script>
   const vscode = acquireVsCodeApi();
-  function switchProject(path) { vscode.postMessage({ command: 'switchProject', path }); }
-  function addCurrent() { vscode.postMessage({ command: 'addCurrent' }); }
-  function addAny() { vscode.postMessage({ command: 'addAny' }); }
-  function openTerminal() { vscode.postMessage({ command: 'openTerminal' }); }
-  function removeProject(path) { vscode.postMessage({ command: 'removeProject', path }); }
-  function editProject(path) { vscode.postMessage({ command: 'editProject', path }); }
-  function setPosition(position) { vscode.postMessage({ command: 'setPosition', position }); }
-  
-  function drag(ev, path) {
-    ev.dataTransfer.setData("text/plain", path);
-    setTimeout(() => ev.target.classList.add('dragging'), 10);
-  }
-  function allowDrop(ev) {
+
+  document.addEventListener('click', (ev) => {
+    const target = ev.target.closest('[data-action]');
+    if (!target) return;
+    const action = target.dataset.action;
+    const path = target.dataset.path;
+    switch (action) {
+      case 'addCurrent': vscode.postMessage({ command: 'addCurrent' }); break;
+      case 'addAny': vscode.postMessage({ command: 'addAny' }); break;
+      case 'openTerminal': vscode.postMessage({ command: 'openTerminal' }); break;
+      case 'switch': if (path) vscode.postMessage({ command: 'switchProject', path }); break;
+      case 'edit': ev.stopPropagation(); if (path) vscode.postMessage({ command: 'editProject', path }); break;
+      case 'remove': ev.stopPropagation(); if (path) vscode.postMessage({ command: 'removeProject', path }); break;
+    }
+  });
+
+  const posSel = document.getElementById('posSelect');
+  if (posSel) posSel.addEventListener('change', (e) => {
+    vscode.postMessage({ command: 'setPosition', position: e.target.value });
+  });
+
+  document.addEventListener('dragstart', (ev) => {
+    const tab = ev.target.closest('.tab[data-action="switch"]');
+    if (!tab) return;
+    ev.dataTransfer.setData('text/plain', tab.dataset.path || '');
+    setTimeout(() => tab.classList.add('dragging'), 10);
+  });
+  document.addEventListener('dragover', (ev) => {
+    if (ev.target.closest('.tab')) ev.preventDefault();
+  });
+  document.addEventListener('drop', (ev) => {
+    const tab = ev.target.closest('.tab[data-action="switch"]');
+    if (!tab) return;
     ev.preventDefault();
-  }
-  function drop(ev, targetPath) {
-    ev.preventDefault();
-    const draggedPath = ev.dataTransfer.getData("text/plain");
-    if (draggedPath && draggedPath !== targetPath) {
+    const draggedPath = ev.dataTransfer.getData('text/plain');
+    const targetPath = tab.dataset.path;
+    if (draggedPath && targetPath && draggedPath !== targetPath) {
       vscode.postMessage({ command: 'reorder', draggedPath, targetPath });
     }
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('dragging'));
-  }
-  document.addEventListener('dragend', (ev) => {
+  });
+  document.addEventListener('dragend', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('dragging'));
   });
 
   window.addEventListener('message', event => {
     const message = event.data;
     if (message.command === 'gitState') {
-      const tabs = document.querySelectorAll(\`.tab[data-path="\${message.path.replace(/"/g, '&quot;')}"]\`);
-      tabs.forEach(tab => {
+      document.querySelectorAll('.tab').forEach(tab => {
+        if (tab.dataset.path !== message.path) return;
         const nameNode = tab.querySelector('.tab-name');
         if (nameNode && !nameNode.querySelector('.git-badge')) {
           const badge = document.createElement('span');
@@ -913,9 +923,5 @@ function getHtml(projects, activePath, position, showRecent, recentProjects, sta
 function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function escapeJs(s) {
-  return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-}
-
 function deactivate() {}
 module.exports = { activate, deactivate };
